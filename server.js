@@ -15,11 +15,12 @@ const asciiArt = fs.readFileSync(path.join(__dirname, "ascii.txt"), "utf8");
 
 app.get("/", (req, res) => {
   const userAgent = req.headers["user-agent"] || "";
+  const protocol = req.headers["x-forwarded-proto"] || "";
 
-  if (userAgent.includes("curl")) {
+  if (userAgent.includes("curl") && protocol === "https") {
     res.type("text/plain").send(`\n${asciiArt}\n`);
   } else {
-    res.send("pliss curl hi.sandri.my.id");
+    res.send("pliss curl https://hi.sandri.my.id");
   }
 });
 
